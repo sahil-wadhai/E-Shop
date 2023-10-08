@@ -126,8 +126,12 @@
                                 <a href="" class="dropdown-item">#</a>
                             </div>
                         </div>
-                        <a href="" class="nav-item nav-link">lorem</a>
                         
+                        {%for category in categories%}
+                            <a href="{% url 'category_view' category.slug %}" class="nav-item nav-link">{{category.category_name}}</a>
+                            {%empty%}
+                                <p>No Categories</p>
+                        {%endfor%}
                     </div>
                 </nav>
             </div>

@@ -87,3 +87,18 @@ class Purchase(models.Model):
 
     def __str__(self):
         return self.product.title +str("-")+ str(self.buyer.id)
+    
+
+class Comment(models.Model):
+    RATING = (
+        (1,1),
+        (2,2),
+        (3,3),
+        (4,4),
+        (5,5)
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False,blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
+    rating = models.IntegerField(choices=RATING,null=False)
+    review = models.TextField(max_length=500,null=False,blank=False)
+    created = models.DateField(default=timezone.now)

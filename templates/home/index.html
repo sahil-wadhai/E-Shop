@@ -24,7 +24,7 @@
                             <img class="position-absolute w-100 h-100" src="{% static 'imgs/example1.webp' %}" style="object-fit: cover;">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
-                                    <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Men Fashion</h1>
+                                    <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">AD 1</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                                     <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
                                 </div>
@@ -34,7 +34,7 @@
                             <img class="position-absolute w-100 h-100" src="https://cdn.pixabay.com/photo/2017/03/13/17/26/ecommerce-2140604__340.jpg" style="object-fit: cover;">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
-                                    <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Women Fashion</h1>
+                                    <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">AD 2</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                                     <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
                                 </div>
@@ -100,7 +100,7 @@
 
 
     <!-- Categories Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid pt-5" id="categories">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
         <div class="row px-xl-5 pb-3">
             
@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">{{product.title}}</a>
+                            <a class="h6 text-decoration-none text-truncate" href="{% url 'product_detail' product.slug %}">{{product.title}}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
                                 <h5>{{product.price}}</h5><h6 class="text-muted ml-2">INR</h6>
                             </div>
