@@ -53,11 +53,11 @@
                     <h3 class="text-uppercase">{{product.title}}</h3>
                     <div class="d-flex mb-3">
                         <div class="text-primary mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star-half-alt"></small>
-                            <small class="far fa-star"></small>
+                            <small class="{% if product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></small>
+                            <small class="{% if product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></small>
+                            <small class="{% if product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></small>
+                            <small class="{% if product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></small>
+                            <small class="{% if product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></small>
                         </div>
                         <small class="pt-1">(99 Reviews)</small>
                     </div>
@@ -155,11 +155,11 @@
                                             <div class="media-body">
                                                 <h6>{{comment.user.first_name}}  {{comment.user.last_name}}<small> - <i>{{comment.created}}</i></small></h6>
                                                 <div class="text-primary mb-2">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                    <i class="far fa-star"></i>
+                                                    <i class="{% if comment.rating > 0 %} fas fa-star {%else%} far fa-star {% endif %}"></i>
+                                                    <i class="{% if comment.rating > 1 %} fas fa-star {%else%} far fa-star {% endif %}"></i>
+                                                    <i class="{% if comment.rating > 2 %} fas fa-star {%else%} far fa-star {% endif %}"></i>
+                                                    <i class="{% if comment.rating > 3 %} fas fa-star {%else%} far fa-star {% endif %}"></i>
+                                                    <i class=" {% if comment.rating > 4 %} fas fa-star {%else%} far fa-star {% endif %}"></i>
                                                 </div>
                                                 <p>{{comment.review}}</p>
                                             </div>
