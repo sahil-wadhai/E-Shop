@@ -50,11 +50,18 @@ def product_detail(request,product_slug):
     product_detail = Product.objects.get(slug = product_slug)
     product_images = ProductImage.objects.filter(product=product_detail)
     comments_list = Comment.objects.filter(product=product_detail)
+    related_products_list = Product.objects.filter(category=product_detail.category)
+
+    paginator = Paginator(comments_list, 6)
+    page_number = request.GET.get('page')
+    comments_page = paginator.get_page(page_number)
+
     context = {
         "product" : product_detail,
         "images" : product_images,
         "categories":category_list,
-        "comments":comments_list
+        "comments":comments_page,
+        "related_products":related_products_list
     }
     return render(request,"product/detail.html",context)
 

@@ -50,7 +50,7 @@ class Product(models.Model):
     
     def save(self,*args,**kwargs):
         if not self.slug and self.title:
-            string = str(self.title)+str("_")+str(self.id)
+            string = str(self.title)+str("-")+str(self.id)
             self.slug = slugify(string)
             
         super(Product,self).save(*args,**kwargs)
