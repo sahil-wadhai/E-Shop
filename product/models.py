@@ -3,7 +3,7 @@ from home.models import User
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.utils.text import slugify
-
+from .utils import unique_slug_generator
 # Create your models here.
 class Category(models.Model):
     category_name = models.CharField(max_length=40,null=False,blank=False,unique=True)
@@ -50,8 +50,7 @@ class Product(models.Model):
     
     def save(self,*args,**kwargs):
         if not self.slug and self.title:
-            string = str(self.title)+str("-")+str(self.id)
-            self.slug = slugify(string)
+            self.slug = unique_slug_generator(self)
             
         super(Product,self).save(*args,**kwargs)
     
@@ -102,3 +101,13 @@ class Comment(models.Model):
     rating = models.IntegerField(choices=RATING,null=False)
     review = models.TextField(max_length=500,null=False,blank=False)
     created = models.DateField(default=timezone.now)
+    def __str__(self):
+        return self.product.title + str("-") + self.user.email
+
+class Cart(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False,blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
+    quantity = models.PositiveIntegerField(null=False,blank=False,default=1)
+
+    def __str__(self):
+        return self.product.title + str("-") + self.user.email

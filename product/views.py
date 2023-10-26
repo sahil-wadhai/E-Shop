@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
-from .models import Product,ProductImage,Category,Comment
+from .models import Product,ProductImage,Category,Comment,Cart
 from django.http import HttpResponse #manually added
 from django.core.paginator import Paginator #for pagination
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 category_list = Category.objects.all()
@@ -46,6 +47,7 @@ def category_view(request,category_slug):
     }
     return render(request,"product/shop.html",context)
 
+@login_required(login_url="/login")
 def product_detail(request,product_slug):
     product_detail = Product.objects.get(slug = product_slug)
     product_images = ProductImage.objects.filter(product=product_detail)
@@ -65,9 +67,19 @@ def product_detail(request,product_slug):
     }
     return render(request,"product/detail.html",context)
 
+@login_required(login_url="/login")
 def add_to_cart(request,product_slug):
-    print("product added to cart")
-    return redirect(f"/{product_slug}")
+    product = Product.objects.get(slug=product_slug)
+    cart_item = Cart.objects.filter(user=request.user, product=product)
+    quantity = request.GET.get("quantity")
+    if(cart_item):
+        cart_item[0].quantity = quantity
+        cart_item[0].save()
+    else:
+        new_cart_item = Cart(user=request.user,product=product,quantity=quantity)
+        new_cart_item.save()
+    
+    return redirect(f"/shop/view/{product_slug}")
 
 
 

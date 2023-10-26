@@ -67,13 +67,14 @@
                         Nonumy</p>
                     
                     
-                    <div class="d-flex align-items-center mb-4 pt-2">
+                    <form method="GET" action="/shop/add/{{product.slug}}" class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
-                            <input type="number" class="form-control bg-secondary border-0 text-center" value="1" min="1" max={{product.count}}>    
+                            <input type="number" name="quantity" class="form-control bg-secondary border-0 text-center" value="1" min="1" max={{product.count}}>    
                         </div>
-                        <button onclick="location.href='/1/add'" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart</button>
-                    </div>
+                        <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> 
+                            Add To Cart
+                        </button>
+                    </form>
                     <div class="d-flex pt-2">
                         <strong class="text-dark mr-2">Share on:</strong>
                         <div class="d-inline-flex">

@@ -47,6 +47,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <button class="dropdown-item" type="button">Sign in</button>
                             <button class="dropdown-item" type="button">Sign up</button>
+                            <button onclick="location.href='/logout'" class="dropdown-item" type="button">Log out</button>
                         </div>
                     </div>
                     <div class="btn-group mx-2">
@@ -151,7 +152,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                    <a href="{%url 'cart'%}" class="dropdown-item">Shopping Cart</a>
+                                    <a href="{%url 'show_cart'%}" class="dropdown-item">Shopping Cart</a>
                                     <a href="checkout.html" class="dropdown-item">Checkout</a>
                                 </div>
                             </div>
