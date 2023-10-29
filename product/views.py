@@ -4,6 +4,8 @@ from django.http import HttpResponse #manually added
 from django.core.paginator import Paginator #for pagination
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.db.models import Avg
 
 # Create your views here.
 category_list = Category.objects.all()
@@ -57,15 +59,37 @@ def product_detail(request,product_slug):
     paginator = Paginator(comments_list, 6)
     page_number = request.GET.get('page')
     comments_page = paginator.get_page(page_number)
+    total_comments = comments_list.count()
 
     context = {
         "product" : product_detail,
         "images" : product_images,
         "categories":category_list,
         "comments":comments_page,
+        "total_comments":total_comments,
         "related_products":related_products_list
     }
     return render(request,"product/detail.html",context)
+
+@login_required(login_url="/login")
+def rate_product(request,product_slug):
+    product = Product.objects.get(slug=product_slug)
+    comment = Comment.objects.filter(user=request.user, product=product).first()
+    rating = request.POST.get("rating")
+    review = request.POST.get("review")
+    if(comment):
+        comment.rating = rating
+        comment.review = review
+        comment.created = timezone.now()
+        comment.save()
+    else:
+        new_comment = Comment(user=request.user,product=product,rating=rating,review=review)
+        new_comment.save()
+
+    product.product_rating = Comment.objects.filter(product=product).aggregate(Avg("rating", default=0))['rating__avg']
+    product.save()
+
+    return redirect(f"/shop/view/{product_slug}")
 
 @login_required(login_url="/login")
 def add_to_cart(request,product_slug):

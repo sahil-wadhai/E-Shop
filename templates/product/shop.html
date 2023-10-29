@@ -69,12 +69,11 @@
                                         <h5>{{p.price}}</h5><h6 class="text-muted ml-2">INR</h6>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-1">
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small>(99)</small>
+                                        <small class="{% if product.product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
+                                        <small class="{% if product.product_rating > 1 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
+                                        <small class="{% if product.product_rating > 2 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
+                                        <small class="{% if product.product_rating > 3 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
+                                        <small class="{% if product.product_rating > 4 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
                                     </div>
                                 </div>
                             </div>

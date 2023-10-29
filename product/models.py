@@ -28,6 +28,14 @@ class Product(models.Model):
         ("new","New"),
         ("used","Used")
     )
+    RATING = (
+        (0,0),
+        (1,1),
+        (2,2),
+        (3,3),
+        (4,4),
+        (5,5)
+    )
 
     title = models.CharField(max_length=40,null=False,blank=False)
     detail = models.TextField(max_length=500,null=False,blank=False)
@@ -35,6 +43,7 @@ class Product(models.Model):
     condition = models.CharField(max_length=10,choices=CONDITION_TYPE)
     price = models.DecimalField(max_digits=10,decimal_places=2,null=False,blank=False)
     product_image = models.ImageField(upload_to='thumbnail_imgs/',null=False,blank=False,default='product_imgs/default.png')
+    product_rating = models.IntegerField(choices=RATING,null=False,default=0)
 
     status = models.BooleanField(null=False,blank=False,default=True) #availability
     count = models.PositiveIntegerField(null=False,blank=False,default=1)
