@@ -42,7 +42,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(_('email address'), unique = True)
     first_name = models.CharField(max_length = 30,blank=True)
     last_name = models.CharField(max_length = 30,blank=True,default="")
-    phone = models.CharField(max_length = 30,blank=True,default="")
+    phone = models.CharField(max_length = 10,blank=True,default="")
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -53,3 +53,13 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
+    locality = models.CharField(max_length=100,null=False,blank=False)
+    state = models.CharField(max_length=50,null=False,blank=False)
+    city = models.CharField(max_length=50,null=False,blank=False)
+    postal_code = models.CharField(max_length=5,null=False,blank=False)
+
+    def __str__(self):
+        return str(self.user) + " - " + str(self.postal_code)

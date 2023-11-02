@@ -110,7 +110,7 @@
             let price = item.getElementsByClassName("item_price")
             let total = item.getElementsByClassName("item_total")
 
-            total[0].innerHTML = (parseFloat(quantity[0].value)*parseFloat(price[0].innerText)) 
+            total[0].innerHTML = (parseFloat(quantity[0].value)*parseFloat(price[0].innerText)).toFixed(2)
         }
    
     </script>

@@ -1,5 +1,5 @@
 from django.db import models
-from home.models import User
+from home.models import User,Address
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.utils.text import slugify
@@ -44,13 +44,14 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10,decimal_places=2,null=False,blank=False)
     product_image = models.ImageField(upload_to='thumbnail_imgs/',null=False,blank=False,default='product_imgs/default.png')
     product_rating = models.IntegerField(choices=RATING,null=False,default=0)
+    pickup_address = models.ForeignKey(Address,on_delete=models.SET_NULL, null = True)
 
     status = models.BooleanField(null=False,blank=False,default=True) #availability
     count = models.PositiveIntegerField(null=False,blank=False,default=1)
 
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT,null=True,blank=True,default=None)
     brand = models.ForeignKey('Brand', on_delete=models.SET_DEFAULT,null=True,blank=True,default=None)
-    created = models.DateField(default=timezone.now)
+    created_at = models.DateField(default=timezone.now)
 
     slug = models.SlugField(blank=True,null=True,unique=True)
 
