@@ -1,0 +1,160 @@
+{%extends "home/base.html"%}
+
+{%block title%}
+ EShop-Checkout
+{%endblock title%}
+
+{%block style%}
+{%endblock style%}
+
+{%block path%}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Home</a>
+                    <a class="breadcrumb-item text-dark" href="">user</a>
+                    <a class="breadcrumb-item text-dark" href="">register-product</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+{%endblock path%}
+
+{%block body%}
+    <!-- Checkout Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <form method="POST" action={%url "register_product"%} class="col-lg-8" enctype='multipart/form-data'>
+                {% csrf_token %}   
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Register Product</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Title</label>
+                            <input class="form-control" name="title" type="text" placeholder="Title of the product" required>
+                        </div>
+                        
+                        <div class="col-md-6 form-group">
+                            <label>Brand</label>
+                            <select class="custom-select" name="brand">
+                                <option value="" selected>------select product brand-------</option>
+                                {%for brand in brands%}
+                                    <option value="{{brand.slug}}">{{brand.brand_name}}</option>
+                                    {%empty%}
+                                    <option value="">other</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Category</label>
+                            <select class="custom-select" name="category">
+                                <option value="" selected>------select product category-------</option>
+                                {%for category in categories%}
+                                    <option value="{{category.slug}}">{{category.category_name}}</option>
+                                    {%empty%}
+                                    <option value="">other</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Price</label>
+                            <input class="form-control" id="confirm_password" name='price' type="number" placeholder="Price for each piece in (INR)" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Quantity</label>
+                            <input class="form-control" id="confirm_password" name='count' type="number" value="1" placeholder="" required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label for="specification">Specification</label>
+                            <textarea class="form-control" id="specification" name="detail" placeholder="ex. - model name, color, specifications, technology etc." rows="5"></textarea>
+                        </div>
+                        <div class="ml-3 my-3 col-md-6 form-check form-check-inline">
+                            <label class="form-check-label mr-2" for="inlineCheckbox1">Is product second hand?</label>
+                            <input name="condition" class="form-check-input form-control-md border-2 border-primary" type="checkbox" id="inlineCheckbox1" value="used">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="image_input">Product thumbnail image</label>
+                            <input type="file" accept="image/png, image/jpeg" name="product_image" class="form-control-file" id="image_input">
+                        </div>
+                        {%for add in addresses%}
+                            <div class="mt-5 mb-2">
+                                <label for="add{{forloop.counter}}">Address Line {{ forloop.counter }}</label>
+                                <input id="add{{forloop.counter}}" type="radio" name="address" value="{{add.id}}">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Locality</label>
+                                <input class="form-control" type="text" placeholder="{{add.locality}}" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>State</label>
+                                <select class="custom-select" disabled>
+                                    <option selected>{{add.state}}</option>
+                                    <option>Afghanistan</option>
+                                    <option>Albania</option>
+                                    <option>Algeria</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" placeholder="{{add.city}}" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>ZIP Code</label>
+                                <input class="form-control" type="text" placeholder="{{add.postal_code}}" disabled>
+                            </div>
+                        {%endfor%}
+                        <div class="mt-3 col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="radio" name="address" class="custom-control-input" id="pickup_from">
+                                <label class="custom-control-label" for="pickup_from"  data-toggle="collapse" data-target="#pickup-address">New Pickup address</label>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                <div class="collapse mb-5" id="pickup-address">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
+                    <div class="bg-light p-30">
+                        <div class="row">
+                            <div class="mt-3 mb-2">
+                                <label>New Address</label>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Locality</label>
+                                <input class="form-control" name="locality" type="text" placeholder="123 Street">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>State</label>
+                                <select class="custom-select" name="state">
+                                    <option selected>United States</option>
+                                    <option>India</option>
+                                    <option>Albania</option>
+                                    <option>Algeria</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="city" placeholder="Mumbai">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Postal Code</label>
+                                <input class="form-control" type="text" name="postal_code" placeholder="12345" maxlength="6" minlength="6">
+                            </div>
+                            <input type="hidden" name="" value="/">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="mx-3 my-4 col-md-6 btn btn-block btn-primary font-weight-bold py-3">Register Product</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Checkout End -->
+{%endblock body%}
+
+{%block script%}
+<script>
+</script>
+{%endblock script%}

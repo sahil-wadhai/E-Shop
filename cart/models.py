@@ -7,7 +7,7 @@ from home.models import User,Address
 
 class Payment(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
-  amount = models.FloatField()
+  total_amount = models.FloatField(null=False,blank=False,default=0.00)
   razorpay_order_id = models.CharField(max_length=100,blank=True,null=True)
   razorpay_payment_id = models.CharField(max_length=100,blank=True,null=True)
   razorpay_payment_status = models.CharField(max_length=100,blank=True,null=True)
@@ -23,10 +23,12 @@ class Order(models.Model):
     )
   product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False,blank=False)
   customer = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
+  payment = models.ForeignKey(Payment, on_delete=models.CASCADE,default="",null=True)
+
   quantity = models.PositiveIntegerField(null=False,blank=False,default=1)
   order_date = models.DateTimeField(auto_now_add=True)
+  order_amount = models.FloatField(null=False,blank=False,default=0.00)
   status = models.CharField(max_length=50,choices=STATUS,null=False,blank=False,default="pending")
-  payment = models.ForeignKey(Payment, on_delete=models.CASCADE,default="",null=True)
   customer_mobile = models.CharField(max_length = 10,null=False,default="")
   delivery_address = models.ForeignKey(Address,on_delete=models.SET_NULL,null=True)
 

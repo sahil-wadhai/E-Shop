@@ -40,11 +40,11 @@ class Product(models.Model):
     title = models.CharField(max_length=40,null=False,blank=False)
     detail = models.TextField(max_length=500,null=False,blank=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE,null=False,blank=False)
-    condition = models.CharField(max_length=10,choices=CONDITION_TYPE)
+    condition = models.CharField(max_length=10,choices=CONDITION_TYPE,default="new")
     price = models.DecimalField(max_digits=10,decimal_places=2,null=False,blank=False)
     product_image = models.ImageField(upload_to='thumbnail_imgs/',null=False,blank=False,default='product_imgs/default.png')
-    product_rating = models.IntegerField(choices=RATING,null=False,default=0)
     pickup_address = models.ForeignKey(Address,on_delete=models.SET_NULL, null = True)
+    product_rating = models.IntegerField(choices=RATING,null=False,default=0)
 
     status = models.BooleanField(null=False,blank=False,default=True) #availability
     count = models.PositiveIntegerField(null=False,blank=False,default=1)
@@ -67,13 +67,20 @@ class Product(models.Model):
 class Brand(models.Model):
     brand_name = models.CharField(max_length=40,null=False,blank=False,unique=True)
     logo = models.ImageField(upload_to='brand_logos/',null=True,blank=True)
-
+    slug = models.SlugField(blank=True,null=True,unique=True)
+    
     class Meta:
         verbose_name='brand'
         verbose_name_plural = 'brands'
 
     def __str__(self):
         return self.brand_name
+    
+    def save(self,*args,**kwargs):
+        if not self.slug and self.brand_name:
+            self.slug = slugify(self.brand_name)
+            
+        super(Brand,self).save(*args,**kwargs)
     
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False,blank=False)

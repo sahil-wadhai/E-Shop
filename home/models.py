@@ -59,7 +59,7 @@ class Address(models.Model):
     locality = models.CharField(max_length=100,null=False,blank=False)
     state = models.CharField(max_length=50,null=False,blank=False)
     city = models.CharField(max_length=50,null=False,blank=False)
-    postal_code = models.CharField(max_length=5,null=False,blank=False)
+    postal_code = models.CharField(max_length=6,null=False,blank=False)
 
     def __str__(self):
         return str(self.user) + " - " + str(self.postal_code)

@@ -1,0 +1,116 @@
+{%extends "home/base.html"%}
+
+{%block title%}
+ EShop-Checkout
+{%endblock title%}
+
+{%block style%}
+{%endblock style%}
+
+{%block body%}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Home</a>
+                    <a class="breadcrumb-item text-dark" href="">Sign-up</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Checkout Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <form method="POST" action={%url "sign_up"%} class="col-lg-8">
+              {% csrf_token %}
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">User Registration</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>First Name</label>
+                            <input class="form-control" name="first_name" type="text" placeholder="Your first name" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" name="last_name" type="text" placeholder="Your last name" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" name="email" type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Mobile No</label>
+                            <input class="form-control" name='phone' type="text" minlength="6" maxlength="10" placeholder="Phone" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                          <label>Set Password:</label>
+                          <input class="form-control" id="password" name='password' type="password" minlength="6" maxlength="15" placeholder="Password (6-15 characters)" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                          <label>Confirm Password:</label>
+                          <input onblur="matchPassword()" class="form-control" id="confirm_password" name='confirm_password' type="password" minlength="6" maxlength="15" placeholder="Confirm Password" required>
+                        </div>
+
+                        <div class="mt-3 col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="shipto">
+                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Add Shipping address</label>
+                            </div>
+                        </div>
+                      </div>
+
+                </div>
+                <div class="collapse mb-5" id="shipping-address">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
+                    <div class="bg-light p-30">
+                        <div class="row" >
+                            <div class="mt-3 mb-2">
+                                <label>New Address</label>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Locality</label>
+                                <input class="form-control" name="user_locality" type="text" placeholder="123 Street">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>State</label>
+                                <select class="custom-select" name="user_state">
+                                    <option selected>United States</option>
+                                    <option>India</option>
+                                    <option>Albania</option>
+                                    <option>Algeria</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="user_city" placeholder="Mumbai">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Postal Code</label>
+                                <input class="form-control" type="text" name="user_postal_code" placeholder="12345" maxlength="6" minlength="6">
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3 col-lg-6">Register</button>
+            </form>
+        </div>
+    </div>
+    <!-- Checkout End -->
+{%endblock body%}
+
+{%block script%}
+<script>
+  function matchPassword() {  
+    var pw1 = document.getElementById("password").value;  
+    var pw2 = document.getElementById("confirm_password").value;  
+    if(pw1 != pw2)  
+    {   
+      alert("Password doesn't match");
+    }  
+  }  
+</script>
+{%endblock script%}

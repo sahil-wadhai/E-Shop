@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.http.response import JsonResponse
 from home.models import User,Address
 from product.models import Category,Cart
 from .models import Payment,Order
@@ -12,9 +14,19 @@ category_list = Category.objects.all()
 @login_required(login_url="/login")
 def show_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
+    sub_total = 0
+    shipping = 0
+    platform = 0
+    for item in cart_items:
+        sub_total += item.product.price*item.quantity
+    total = shipping+platform+sub_total
     context = {
         "categories":category_list,
-        "cart_items":cart_items
+        "cart_items":cart_items,
+        "sub_total":sub_total,
+        "shipping":shipping,
+        "platform":platform,
+        "total":total
     }
     
     return render(request,"cart/cart.html",context)
@@ -25,6 +37,11 @@ def remove_cart_item(request,cart_item_id):
     if(item.user==request.user):
         item.delete()
     return redirect("/cart")
+
+@login_required(login_url="/login")
+def getCartSize(request):
+    cart_size = Cart.objects.filter(user=request.user).count()
+    return JsonResponse({"status":"success", "cart_size":cart_size})
 
 @login_required(login_url="/login")
 def inc_cart_item(request,cart_item_id):
@@ -49,6 +66,9 @@ def dec_cart_item(request,cart_item_id):
 @login_required(login_url="/login")
 def checkout(request):  
     cart_items = Cart.objects.filter(user=request.user)
+    if not cart_items.exists():
+        return redirect("/cart")
+
     addresses = Address.objects.filter(user=request.user)
     total_amount = 0
     shipping = 0
@@ -72,14 +92,7 @@ def checkout(request):
     payment_response = client.order.create(data=DATA)
     razorpay_order_id = payment_response['id']
     razorpay_payment_status = payment_response['status']
-
-    if razorpay_payment_status=='created':
-        payment = Payment(  user = request.user, 
-                            razorpay_order_id=razorpay_order_id , 
-                            razorpay_payment_status=razorpay_payment_status,
-                            amount=total_amount
-                         )
-        payment.save()
+        
     
     context = {
         "customer":request.user,
@@ -101,19 +114,45 @@ def place_order(request):
         address_id = request.POST.get('address')
         mobile = request.POST.get('mobile')
         address = Address.objects.get(Q(user=request.user) & Q(id=address_id))
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_payment_id = request.POST.get('razorpay_payment_id')
+        payment = Payment(  user = request.user, 
+                            razorpay_order_id=razorpay_order_id , 
+                            razorpay_payment_id=razorpay_payment_id,
+                            paid=True
+                         )
+        payment.save()
+
         shipping=0
+        total_amount=0
         for item in cart_items:
             order_amount = item.product.price*item.quantity + shipping
+            total_amount += order_amount
             if mobile and address:
+                product = item.product
+                product.count -= item.quantity
                 new_order = Order(customer=request.user,         
                                 delivery_address=address,
                                 product=item.product,
-                                quantity=item.quantity,customer_mobile=mobile)
+                                quantity=item.quantity,
+                                customer_mobile=mobile,
+                                order_amount=order_amount,
+                                payment=payment)
                 new_order.save()
+                product.save()
                 item.delete()
+        
+        payment.total_amount = total_amount
+        payment.save()
             
-    return redirect("/cart")
+    return render(request,"cart/order_confirm.html")
+
 
 @login_required(login_url="/login")
-def payment_done(request):
-    pass
+def orders(request):
+    orders = Order.objects.filter(customer=request.user)
+    context = {
+        "categories":category_list,
+        "orders":orders
+    }
+    return render(request,"cart/orders.html",context)

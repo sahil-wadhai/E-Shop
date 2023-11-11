@@ -14,7 +14,7 @@
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
                     <a class="breadcrumb-item text-dark" href="#">Home</a>
-                    <span class="breadcrumb-item active">User-Listings</span>
+                    <span class="breadcrumb-item active">Orders</span>
                 </nav>
             </div>
         </div>
@@ -29,36 +29,32 @@
       <div class="row">
           <div class="col-lg-10 offset-lg-1">
               <div class="cart_container">
-                  <div class="cart_title">My Listings<small> ({{products|length}}) </small></div>
+                  <div class="cart_title">Orders<small> ({{orders|length}}) </small></div>
                   <div class="cart_items">
                       <ul class="cart_list">
-                        {%for product in products%}
-                          <li class="cart_item my-2 clearfix" onclick="window.location.href={% url 'product_detail' product.slug %}">
-                              <div class="cart_item_image"><img src="{{product.product_image.url}}" alt=""></div>
+                        {%for order in orders%}
+                          <li onclick="window.location.href={% url 'product_detail' order.product.slug %}" class="cart_item my-2 clearfix">
+                              <div class="cart_item_image"><img src="{{order.product.product_image.url}}" alt=""></div>
                               <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
                                   <div class="cart_item_name cart_info_col">
                                       <div class="cart_item_title">Name</div>
-                                      <div class="cart_item_text">{{product.title}}</div>
+                                      <div class="cart_item_text">{{order.product.title}}</div>
                                   </div>
                                   <div class="cart_item_color cart_info_col">
-                                      <div class="cart_item_title">Average Rating</div>
-                                      <div class="cart_item_text"><small class="{% if product.product_rating > 0 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
-                                        <small class="{% if product.product_rating > 1 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
-                                        <small class="{% if product.product_rating > 2 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
-                                        <small class="{% if product.product_rating > 3 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small>
-                                        <small class="{% if product.product_rating > 4 %} fas fa-star {%else%} far fa-star {% endif %} text-primary mr-1"></small></div>
+                                      <div class="cart_item_title">Delivery Status</div>
+                                      <div class="cart_item_text"><span style="background-color:#999999;"></span>{{order.status}}</div>
                                   </div>
                                   <div class="cart_item_quantity cart_info_col">
-                                      <div class="cart_item_title">In Stock</div>
-                                      <div class="cart_item_text">{{product.count}}</div>
+                                      <div class="cart_item_title">Quantity</div>
+                                      <div class="cart_item_text">{{order.quantity}}</div>
                                   </div>
                                   <div class="cart_item_price cart_info_col">
                                       <div class="cart_item_title">Price</div>
-                                      <div class="cart_item_text">{{product.price}}</div>
+                                      <div class="cart_item_text">{{order.product.price}}</div>
                                   </div>
                                   <div class="cart_item_total cart_info_col">
                                       <div class="cart_item_title">Total</div>
-                                      <div class="cart_item_text"></div>
+                                      <div class="cart_item_text">{{order.order_amount}}</div>
                                   </div>
                               </div>
                           </li>
@@ -66,7 +62,7 @@
                       </ul>
                   </div>
                   
-                  <div class="cart_buttons"> <button type="button" onclick="window.location.href={%url "product_form"%}" class="button cart_button_checkout">Add Listing</button> </div>
+                  <div class="cart_buttons"> <button type="button" onclick="window.location.href='/'" class="button cart_button_clear">Continue Shopping</button> </div>
               </div>
               
           </div>
